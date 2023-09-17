@@ -1,0 +1,21 @@
+#introduction { /* adds room at the top of the page */
+    padding-top: 50px;
+}
+
+nav{ /* adds a border around the navigation */
+    display: flex;
+    border: solid;
+}
+
+aside {
+    width: 30%;
+    padding-left: 15px;
+    margin-left: 15px;
+    float: right;
+    background-color: lightgray;
+    line-height: 150%;
+  }
+
+aside img {
+    max-width: 100%;
+  }
