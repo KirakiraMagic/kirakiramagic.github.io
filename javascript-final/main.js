@@ -35,6 +35,10 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             const average = arraySum / array.length;
             sound_level = Math.round(average / 10);
 
+            if (sound_level > 9){
+                sound_level = 9;
+            }
+
             phone_number[selected] = sound_level;
 
             num_display.textContent =  "Phone Number: (" + phone_number[0] + "" + phone_number[1]+ "" + phone_number[2] + ")-" + phone_number[3]+ "" + phone_number[4]+ "" + phone_number[5] + "-" + phone_number[6] + "" + phone_number[7] + "" +phone_number[8]+ "" + phone_number[9];
