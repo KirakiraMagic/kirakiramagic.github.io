@@ -1,3 +1,70 @@
-body{
+body {
     font-family: neue-haas-grotesk-display, helvetica, Arial, sans-serif;
+    background-color: darkcyan;
+}
+
+h2{
+    margin-top: 2em;
+    white-space: nowrap;
+}
+
+.phone_number {
+    max-width: 100%;
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+}
+
+.phone_number h1 {
+    white-space: nowrap;
+    line-height: 0em;
+}
+
+.digits,
+.seperator {
+    text-align: center;
+    margin: 0.1em;
+    padding: 0.3em;
+}
+
+.digits {
+    background-color:cadetblue;
+}
+
+.digits input[type=radio] {
+    width: 100%;
+    height: 2em;
+    justify-self: center;
+    margin: 1em;
+    margin-left: 0em;
+    margin-top: 2em;
+    accent-color: red;
+}
+
+.seperator button{
+    font-weight: bold;
+    font-size: 2em;
+}
+
+#lock {
+    display: inline-block;
+    justify-content: left;
+    vertical-align: middle;
+    margin-top: 1em;
+}
+
+#lock input[type=radio] {
+    display: none;
+}
+
+#lock span {
+    font-size: 2em;
+}
+
+#lock input[type=radio] + span::before {
+    content : "🔓";
+}
+
+#lock input[type=radio]:checked + span::before {
+    content : "🔒";
 }
