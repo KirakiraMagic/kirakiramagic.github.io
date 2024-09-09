@@ -1,9 +1,10 @@
 body {
-    font-family: neue-haas-grotesk-display, helvetica, Arial, sans-serif;
+    font-family: montserrat, Arial, Helvetica, sans-serif;
     background-color: darkcyan;
+    color:lab(lightness a b)
 }
 
-h2{
+.phone_number h2{
     margin-top: 2em;
     white-space: nowrap;
 }

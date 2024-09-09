@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scream Your Numer</title>
+    <style>
+        body {
+            font-family: neue-haas-grotesk-display, helvetica, Arial, sans-serif;
+        }
+
+        .phone_number {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            vertical-align: center;
+        }
+
+        .digits,
+        .seperator {
+            text-align: center;
+            margin: 0.1em;
+            padding: 0.1em;
+        }
+
+        .digits {
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        Use your microphone volume to input your phone number
+        <div class="phone_number">
+            <div class="seperator">
+                <h1>Phone: (</h1>
+                Digit Select:
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="0">
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="1">
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="2">
+            </div>
+            <div class="seperator">
+                <h1>) -&nbsp;</h1>
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="3">
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="4">
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="5">
+            </div>
+            <div class="seperator">
+                <h1>&nbsp;-&nbsp;</h1>
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="6">
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="7">
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="8">
+            </div>
+            <div class="digits">
+                <h1 class = "digit_display">0</h1>
+                <input type="radio" name="digit_selector" value="9">
+            </div>
+            <div class="seperator">
+                <h1><button onclick="submit()">Submit</button> </h1>
+                <label id="lock">
+                    <input type="radio" name="digit_selector" value="10" checked="checked">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const digit_selectors = document.querySelectorAll("input[name='digit_selector']");
+        const digit_displays = document.getElementsByName("digit_display");
+
+        let phone_number = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        let selected = 10;
+
+        digit_selectors.forEach(radioBtn => {
+            radioBtn.addEventListener("change", findSelected);
+        });
+
+        function findSelected() {
+            selected = document.querySelector("input[name='digit_selector']:checked").value;
+        }
+
+        function updateDisplay() {
+            for (let i = 0; i < digit_displays.length; i++) {
+                digit_displays[i].textContent = phone_number[i];
+            }
+        }
+
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                const audioContext = new AudioContext();
+                const analyser = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+
+                const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 1024;
+
+                microphone.connect(analyser);
+                analyser.connect(scriptProcessor);
+                scriptProcessor.connect(audioContext.destination);
+
+                scriptProcessor.onaudioprocess = function (event) {
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    const arraySum = array.reduce((a, value) => a + value, 0);
+                    const average = arraySum / array.length;
+                    sound_level = Math.round(average / 10);
+
+                    if (sound_level > 9) {
+                        sound_level = 9;
+                    }
+
+                    phone_number[selected] = sound_level;
+                    updateDisplay();
+                };
+            })
+            .catch(function (err) {
+                console.error("Error accessing microphone:", err);
+                alert("Error Accessing Microphone:", err);
+            });
+
+        function submit() {
+            alert("Submitted Phone Number: (" + phone_number[0] + "" + phone_number[1] + "" + phone_number[2] + ")-" + phone_number[3] + "" + phone_number[4] + "" + phone_number[5] + "-" + phone_number[6] + "" + phone_number[7] + "" + phone_number[8] + "" + phone_number[9]);
+        }
+    </script>
+</body>
+
+</html>
